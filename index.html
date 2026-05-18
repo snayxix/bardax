@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎣 Carnet de Pêche</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="page-login" class="login-page active">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <h1>🎣 Carnet de Pêche</h1>
+        <p>Connectez-vous pour accéder à votre carnet</p>
+      </div>
+
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Pseudo</label>
+          <input type="text" id="login-pseudo" placeholder="Votre pseudo" required>
+        </div>
+
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="password" id="login-password" placeholder="Votre mot de passe" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%">🔓 Se connecter</button>
+      </form>
+
+      <div class="login-footer">
+        <p>Pas de compte ? <a href="#" onclick="showSignup(event)">S'inscrire</a></p>
+        <p style="font-size:0.75rem;color:var(--text2);margin-top:12px">💡 Données sauvegardées localement dans votre navigateur</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SIGNUP PAGE -->
+<div id="page-signup" class="login-page">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <h1>🎣 Créer un compte</h1>
+        <p>Inscrivez-vous pour commencer</p>
+      </div>
+
+      <form onsubmit="handleSignup(event)">
+        <div class="form-group">
+          <label>Pseudo</label>
+          <input type="text" id="signup-pseudo" placeholder="Choisissez un pseudo" required>
+        </div>
+
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="password" id="signup-password" placeholder="Min 4 caractères" minlength="4" required>
+        </div>
+
+        <div class="form-group">
+          <label>Confirmez le mot de passe</label>
+          <input type="password" id="signup-password-confirm" placeholder="Confirmez votre mot de passe" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%">✅ S'inscrire</button>
+      </form>
+
+      <div class="login-footer">
+        <p><a href="#" onclick="showLogin(event)">Retour à la connexion</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- APP PAGE -->
+<div id="page-app" class="app-page">
+  <nav>
+    <div class="nav-brand">🎣 Carnet de <span>Pêche</span></div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('journal')">📋 Journal</button>
+      <button class="nav-tab" onclick="showPage('ajouter')">➕ Ajouter</button>
+      <button class="nav-tab" onclick="showPage('galerie')">📸 Galerie</button>
+      <button class="nav-tab" onclick="showPage('stats')">📊 Stats</button>
+      <button class="nav-tab" onclick="showPage('classement')">🏆 Classement</button>
+      <button class="nav-tab" onclick="handleLogout()" style="margin-left:auto">🚪 Déconnexion</button>
+    </div>
+  </nav>
+
+  <!-- JOURNAL -->
+  <div id="page-journal" class="page active">
+    <div class="page-header">
+      <h1>📋 Journal de pêche</h1>
+      <p>Toutes vos prises, triées par date</p>
+    </div>
+    <div class="filter-bar">
+      <input type="text" id="search-input" placeholder="🔍 Rechercher..." oninput="renderJournal()">
+      <select id="filter-espece" onchange="renderJournal()">
+        <option value="">Toutes espèces</option>
+      </select>
+    </div>
+    <div id="journal-grid" class="grid-2"></div>
+  </div>
+
+  <!-- AJOUTER -->
+  <div id="page-ajouter" class="page">
+    <div class="page-header">
+      <h1>➕ Ajouter une prise</h1>
+      <p>Enregistrez votre capture du jour</p>
+    </div>
+    <div class="card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="f-date">
+        </div>
+        <div class="form-group">
+          <label>Lieu</label>
+          <input type="text" id="f-lieu" placeholder="Ex: Lac du Bourget">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:16px">
+        <label>Espèce 🐟</label>
+        <div class="selector" id="espece-selector"></div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Taille (cm)</label>
+          <input type="number" id="f-taille" placeholder="Ex: 45" min="1">
+        </div>
+        <div class="form-group">
+          <label>Poids (kg)</label>
+          <input type="number" id="f-poids" placeholder="Ex: 2.3" step="0.1" min="0">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:16px">
+        <label>Leurre / Appât 🪝</label>
+        <div class="selector" id="leurre-selector"></div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:16px">
+        <label>Météo 🌤</label>
+        <div class="selector" id="meteo-selector"></div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:20px">
+        <label>Notes</label>
+        <textarea id="f-notes" placeholder="Conditions, technique, anecdote..."></textarea>
+      </div>
+
+      <button class="btn btn-primary" onclick="ajouterPrise()">✅ Enregistrer la prise</button>
+    </div>
+  </div>
+
+  <!-- GALERIE -->
+  <div id="page-galerie" class="page">
+    <div class="page-header">
+      <h1>📸 Galerie</h1>
+      <p>Vue visuelle de toutes vos prises</p>
+    </div>
+    <div id="galerie-grid" class="gallery-grid"></div>
+  </div>
+
+  <!-- STATS -->
+  <div id="page-stats" class="page">
+    <div class="page-header">
+      <h1>📊 Statistiques</h1>
+      <p>Analyses de vos sessions de pêche</p>
+    </div>
+    <div id="stats-top" class="grid-4" style="margin-bottom:24px"></div>
+    <div class="grid-2">
+      <div class="card">
+        <h3 style="font-family:'Playfair Display',serif;margin-bottom:16px">Espèces pêchées</h3>
+        <div id="chart-especes" class="chart-container"></div>
+      </div>
+      <div class="card">
+        <h3 style="font-family:'Playfair Display',serif;margin-bottom:16px">Leurres les plus efficaces</h3>
+        <div id="chart-leurres" class="chart-container"></div>
+      </div>
+      <div class="card">
+        <h3 style="font-family:'Playfair Display',serif;margin-bottom:16px">Prises par météo</h3>
+        <div id="chart-meteo" class="chart-container"></div>
+      </div>
+      <div class="card">
+        <h3 style="font-family:'Playfair Display',serif;margin-bottom:16px">Prises par mois</h3>
+        <div id="chart-mois" class="chart-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLASSEMENT -->
+  <div id="page-classement" class="page">
+    <div class="page-header">
+      <h1>🏆 Mon classement personnel</h1>
+      <p>Vos meilleures performances</p>
+    </div>
+    <div class="sub-tabs">
+      <button class="sub-tab active" onclick="showLb('nb')">Nombre de prises</button>
+      <button class="sub-tab" onclick="showLb('taille')">Plus grand poisson</button>
+      <button class="sub-tab" onclick="showLb('poids')">Plus lourd</button>
+    </div>
+    <div class="card">
+      <div id="lb-content"></div>
+    </div>
+  </div>
+
+  <!-- MODAL DETAIL -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+    <div class="modal" id="modal-content">
+      <div id="modal-body"></div>
+      <div style="margin-top:20px;display:flex;gap:10px;justify-content:flex-end">
+        <button class="btn btn-danger" id="btn-delete" onclick="">🗑 Supprimer</button>
+        <button class="btn btn-primary" onclick="document.getElementById('modal-overlay').classList.remove('open')">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
