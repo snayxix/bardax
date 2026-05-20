@@ -195,11 +195,22 @@ function formatDate(d) {
 
 // ===== NAVIGATION =====
 function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.remove('active');
+    p.classList.remove('fade-in', 'slide-up', 'slide-left', 'slide-right', 'zoom-in', 'flip-in');
+  });
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
 
-  document.getElementById('page-' + id).classList.add('active');
-  event.target.classList.add('active');
+  const animations = ['fade-in', 'slide-up', 'slide-left', 'slide-right', 'zoom-in', 'flip-in'];
+  const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
+  
+  const page = document.getElementById('page-' + id);
+  page.classList.add('active');
+  page.classList.add(randomAnimation);
+  
+  if (event && event.target) {
+    event.target.classList.add('active');
+  }
 
   if (id === 'journal') renderJournal();
   if (id === 'galerie') renderGalerie();
