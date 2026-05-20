@@ -28,7 +28,9 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 }
-
+body {
+  overflow-x: hidden;
+}
 body::before {
   content: '';
   position: fixed;
@@ -138,7 +140,28 @@ nav {
   align-items: center;
   gap: 0;
 }
+/* ...tes autres styles... */
 
+nav {
+  /* styles du <nav> si tu en as */
+}
+
+/* === Ajoute ici la barre scrollable === */
+
+.nav-tabs {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.nav-tab {
+  flex: 0 0 auto;
+  margin-right: 10px;
+}
+
+/* ...le reste de ton CSS... */
 .nav-brand {
   font-family: 'Playfair Display', serif;
   font-size: 1.4rem;
